@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="aurora">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +23,75 @@
     --accent-2: #7c9eff;
     --accent-3: #f7b955;
     --grad: linear-gradient(135deg, #6ee7b7 0%, #7c9eff 55%, #c084fc 100%);
+    --text-soft: #cdd3e4;
+    --ink: #061014;
     --maxw: 1080px;
     --radius: 18px;
+  }
+
+  /* ---------- THEME VARIANTS ----------
+     Default "aurora" theme above is the original/classic look.
+     Switch themes at runtime via the theme dock (bottom-left); choice is saved in localStorage.
+  */
+  html[data-theme="sunset"]{
+    --bg: #130a08;
+    --bg-soft: #1b100c;
+    --surface: #23140f;
+    --surface-2: #2c1813;
+    --border: rgba(255,185,140,0.12);
+    --text: #fdf1ea;
+    --text-dim: #cba594;
+    --accent: #ff9966;
+    --accent-2: #ff4d6d;
+    --accent-3: #ffd166;
+    --grad: linear-gradient(135deg, #ff9966 0%, #ff4d6d 55%, #c026d3 100%);
+    --text-soft: #ecd3c6;
+    --ink: #2a0f08;
+  }
+  html[data-theme="arctic"]{
+    --bg: #f3f6fd;
+    --bg-soft: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #eaf0fb;
+    --border: rgba(15,23,42,0.1);
+    --text: #0f172a;
+    --text-dim: #5b6478;
+    --accent: #0d9488;
+    --accent-2: #2563eb;
+    --accent-3: #d97706;
+    --grad: linear-gradient(135deg, #0d9488 0%, #2563eb 60%, #7c3aed 100%);
+    --text-soft: #334155;
+    --ink: #0b1020;
+  }
+  html[data-theme="cyber"]{
+    --bg: #05060b;
+    --bg-soft: #0a0c15;
+    --surface: #0e111c;
+    --surface-2: #131726;
+    --border: rgba(0,245,255,0.14);
+    --text: #eafcff;
+    --text-dim: #8ea3c2;
+    --accent: #00e5ff;
+    --accent-2: #ff2bd6;
+    --accent-3: #ffe600;
+    --grad: linear-gradient(135deg, #00e5ff 0%, #ff2bd6 55%, #7000ff 100%);
+    --text-soft: #c9e8ff;
+    --ink: #050812;
+  }
+  html[data-theme="gold"]{
+    --bg: #0b0b0d;
+    --bg-soft: #121214;
+    --surface: #17171a;
+    --surface-2: #1e1e22;
+    --border: rgba(212,175,55,0.16);
+    --text: #f6f5f0;
+    --text-dim: #a4a3a0;
+    --accent: #d4af37;
+    --accent-2: #e8c766;
+    --accent-3: #ffffff;
+    --grad: linear-gradient(135deg, #d4af37 0%, #e8c766 50%, #fff2cc 100%);
+    --text-soft: #dcdad2;
+    --ink: #221b06;
   }
 
   *{ box-sizing: border-box; }
@@ -36,6 +103,7 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+    transition: background-color .5s ease, color .5s ease;
   }
   h1,h2,h3,h4{ font-family:'Space Grotesk', 'Inter', sans-serif; margin:0; letter-spacing:-0.02em; }
   a{ color: inherit; text-decoration:none; }
@@ -67,8 +135,9 @@
     position: fixed; top:0; left:0; right:0; z-index: 100;
     backdrop-filter: blur(14px) saturate(140%);
     background: rgba(7,9,16,0.55);
+    background: color-mix(in srgb, var(--bg) 55%, transparent);
     border-bottom: 1px solid var(--border);
-    transition: transform .4s ease;
+    transition: transform .4s ease, background-color .5s ease;
   }
   .nav-inner{
     max-width: var(--maxw); margin:0 auto; padding: 14px 24px;
@@ -99,7 +168,7 @@
     border:1px solid var(--border); border-radius:10px; color: var(--text-dim);
     transition: all .25s ease;
   }
-  .icon-btn:hover{ color:var(--bg); background: var(--grad); border-color: transparent; transform: translateY(-2px); }
+  .icon-btn:hover{ color:var(--ink); background: var(--grad); border-color: transparent; transform: translateY(-2px); }
 
   .burger{ display:none; width:40px; height:40px; border-radius:10px; border:1px solid var(--border); align-items:center; justify-content:center; cursor:pointer; }
   .burger span, .burger span::before, .burger span::after{
@@ -132,7 +201,8 @@
   }
   .hero p.lead{ margin-top: 22px; color: var(--text-dim); font-size: 1.12rem; max-width: 560px; }
   .hero-meta{ display:flex; flex-wrap:wrap; gap: 18px; margin-top: 26px; }
-  .hero-meta span{ display:flex; align-items:center; gap:8px; font-size:.92rem; color: var(--text-dim); }
+  .hero-meta span, .hero-meta a{ display:flex; align-items:center; gap:8px; font-size:.92rem; color: var(--text-dim); transition: color .25s ease; }
+  .hero-meta a:hover{ color: var(--accent); }
   .hero-meta i{ color: var(--accent-2); width:16px; text-align:center; }
 
   .hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-top: 34px; }
@@ -140,7 +210,7 @@
     display:inline-flex; align-items:center; gap:10px; padding: 13px 24px; border-radius: 12px;
     font-weight:600; font-size:.95rem; transition: all .25s ease; border:1px solid transparent; cursor:pointer;
   }
-  .btn-primary{ background: var(--grad); color:#061014; box-shadow: 0 12px 30px -10px rgba(124,158,255,0.55); }
+  .btn-primary{ background: var(--grad); color:var(--ink); box-shadow: 0 12px 30px -10px rgba(124,158,255,0.55); }
   .btn-primary:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px -12px rgba(124,158,255,0.7); }
   .btn-ghost{ border-color: var(--border); color: var(--text); background: rgba(255,255,255,0.03); }
   .btn-ghost:hover{ border-color: rgba(255,255,255,0.3); transform: translateY(-3px); }
@@ -218,7 +288,7 @@
   }
   .t-card .subrole{ margin-top:10px; font-style:italic; color: var(--text-dim); font-size:.92rem; }
   .t-list{ margin-top:14px; display:flex; flex-direction:column; gap:9px; }
-  .t-list li{ display:flex; gap:10px; font-size:.93rem; color:#cdd3e4; }
+  .t-list li{ display:flex; gap:10px; font-size:.93rem; color:var(--text-soft); }
   .t-list li i{ color: var(--accent); margin-top:5px; font-size:.6rem; }
 
   /* ---------- PROJECTS ---------- */
@@ -235,12 +305,12 @@
   .proj-card:hover::before{ opacity:1; }
   .proj-icon{
     width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center;
-    background: var(--grad); color:#071018; font-size:1.2rem; margin-bottom:18px;
+    background: var(--grad); color:var(--ink); font-size:1.2rem; margin-bottom:18px;
   }
   .proj-card h3{ font-size:1.15rem; margin-bottom:6px; }
   .proj-card .proj-meta{ color: var(--text-dim); font-size:.82rem; margin-bottom:14px; }
   .proj-card ul{ display:flex; flex-direction:column; gap:9px; }
-  .proj-card li{ display:flex; gap:10px; font-size:.92rem; color:#cdd3e4; }
+  .proj-card li{ display:flex; gap:10px; font-size:.92rem; color:var(--text-soft); }
   .proj-card li i{ color: var(--accent-2); margin-top:5px; font-size:.6rem; }
   .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
   .tag{ font-size:.72rem; font-weight:600; padding:5px 11px; border-radius:999px; background: rgba(255,255,255,0.04); border:1px solid var(--border); color: var(--text-dim); }
@@ -268,6 +338,7 @@
   /* ---------- CONTACT ---------- */
   .contact-box{
     background: linear-gradient(135deg, rgba(110,231,183,0.08), rgba(124,158,255,0.08));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, transparent), color-mix(in srgb, var(--accent-2) 12%, transparent));
     border:1px solid var(--border); border-radius: 24px; padding: 60px 50px; text-align:center; position:relative; overflow:hidden;
   }
   .contact-box h2{ font-size: clamp(1.8rem, 4vw, 2.6rem); }
@@ -287,11 +358,43 @@
 
   .back-top{
     position: fixed; bottom: 26px; right: 26px; width:46px; height:46px; border-radius:50%;
-    background: var(--grad); color:#071018; display:flex; align-items:center; justify-content:center;
+    background: var(--grad); color:var(--ink); display:flex; align-items:center; justify-content:center;
     box-shadow: 0 10px 30px -8px rgba(124,158,255,0.6); opacity:0; pointer-events:none; transform: translateY(10px);
     transition: all .3s ease; z-index:90;
   }
   .back-top.show{ opacity:1; pointer-events:auto; transform: translateY(0); }
+
+  /* ---------- THEME DOCK ---------- */
+  .theme-dock{
+    position: fixed; left: 22px; bottom: 22px; z-index: 95;
+    display:flex; align-items:center; gap:10px;
+    background: var(--surface); border:1px solid var(--border); border-radius: 999px;
+    padding: 8px; box-shadow: 0 14px 34px -14px rgba(0,0,0,0.6);
+    transition: background-color .5s ease, border-color .5s ease;
+  }
+  .theme-dock .dock-label{
+    display:flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%;
+    color: var(--text-dim); font-size:.85rem; flex-shrink:0;
+  }
+  .theme-swatch{
+    width: 28px; height: 28px; border-radius:50%; border: 2px solid transparent; cursor:pointer;
+    position:relative; flex-shrink:0; transition: transform .25s ease, border-color .25s ease;
+    padding:0;
+  }
+  .theme-swatch:hover{ transform: translateY(-3px) scale(1.06); }
+  .theme-swatch.active{ border-color: var(--text); box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--text-dim); }
+  .theme-swatch[data-theme-name="aurora"]{ background: linear-gradient(135deg,#6ee7b7,#7c9eff 55%,#c084fc); }
+  .theme-swatch[data-theme-name="sunset"]{ background: linear-gradient(135deg,#ff9966,#ff4d6d 55%,#c026d3); }
+  .theme-swatch[data-theme-name="arctic"]{ background: linear-gradient(135deg,#0d9488,#2563eb 60%,#7c3aed); }
+  .theme-swatch[data-theme-name="cyber"]{ background: linear-gradient(135deg,#00e5ff,#ff2bd6 55%,#7000ff); }
+  .theme-swatch[data-theme-name="gold"]{ background: linear-gradient(135deg,#d4af37,#e8c766 50%,#fff2cc); }
+  .theme-dock-tip{
+    position:absolute; bottom: calc(100% + 12px); left:0; white-space:nowrap;
+    background: var(--surface-2); border:1px solid var(--border); color:var(--text);
+    font-size:.72rem; font-weight:600; padding:6px 12px; border-radius:8px;
+    opacity:0; transform: translateY(6px); pointer-events:none; transition: all .25s ease;
+  }
+  .theme-dock:hover .theme-dock-tip{ opacity:1; transform: translateY(0); }
 
   @media (max-width: 880px){
     .hero-grid{ grid-template-columns: 1fr; }
@@ -311,6 +414,10 @@
   @media (max-width: 520px){
     .contact-box{ padding: 44px 24px; }
     section{ padding: 80px 0; }
+    .theme-dock{ left: 12px; bottom: 12px; gap:7px; padding:6px; }
+    .theme-dock .dock-label{ display:none; }
+    .theme-swatch{ width:24px; height:24px; }
+    .back-top{ right: 16px; bottom: 16px; width:42px; height:42px; }
   }
 </style>
 </head>
@@ -330,6 +437,7 @@
       </ul>
     </nav>
     <div class="nav-cta">
+      <a class="icon-btn" href="https://www.linkedin.com/in/ra%C3%BAl-salas-genero-035533268/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
       <a class="icon-btn" href="https://github.com/RaulSalasG" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
       <a class="icon-btn" href="mailto:rsalas1@babson.edu" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
       <div class="burger" id="burger"><span></span></div>
@@ -352,6 +460,7 @@
         <span><i class="fa-solid fa-phone"></i>774 844 8869</span>
         <span><i class="fa-solid fa-envelope"></i>rsalas1@babson.edu</span>
         <span><i class="fa-brands fa-github"></i>github.com/RaulSalasG</span>
+        <a href="https://www.linkedin.com/in/ra%C3%BAl-salas-genero-035533268/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i>LinkedIn</a>
       </div>
 
       <div class="hero-actions">
@@ -568,6 +677,7 @@
         <a class="contact-pill" href="mailto:rsalas1@babson.edu"><i class="fa-solid fa-envelope"></i>rsalas1@babson.edu</a>
         <a class="contact-pill" href="tel:+17748448869"><i class="fa-solid fa-phone"></i>774 844 8869</a>
         <a class="contact-pill" href="https://github.com/RaulSalasG" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i>github.com/RaulSalasG</a>
+        <a class="contact-pill" href="https://www.linkedin.com/in/ra%C3%BAl-salas-genero-035533268/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i>LinkedIn</a>
       </div>
     </div>
   </div>
@@ -577,6 +687,7 @@
   <div class="wrap footer-inner">
     <p>&copy; <span id="year"></span> Raúl Salas Genero. Built with care in Boston, MA.</p>
     <div class="footer-socials">
+      <a class="icon-btn" href="https://www.linkedin.com/in/ra%C3%BAl-salas-genero-035533268/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
       <a class="icon-btn" href="https://github.com/RaulSalasG" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
       <a class="icon-btn" href="mailto:rsalas1@babson.edu" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
       <a class="icon-btn" href="tel:+17748448869" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
@@ -585,6 +696,16 @@
 </footer>
 
 <a href="#home" class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></a>
+
+<!-- THEME SWITCHER: pick a palette, pick "Aurora" anytime to return to the original/classic look -->
+<div class="theme-dock" id="themeDock" role="group" aria-label="Color theme switcher">
+  <span class="dock-label"><i class="fa-solid fa-palette"></i></span>
+  <button class="theme-swatch" data-theme-name="aurora" aria-label="Aurora theme (classic/original)" title="Aurora · Classic"></button>
+  <button class="theme-swatch" data-theme-name="sunset" aria-label="Sunset theme" title="Sunset"></button>
+  <button class="theme-swatch" data-theme-name="arctic" aria-label="Arctic light theme" title="Arctic"></button>
+  <button class="theme-swatch" data-theme-name="cyber" aria-label="Cyber neon theme" title="Cyber"></button>
+  <button class="theme-swatch" data-theme-name="gold" aria-label="Gold minimal theme" title="Gold"></button>
+</div>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -635,6 +756,22 @@
     });
   }, { threshold: 0.4 });
   bars.forEach(b => barIo.observe(b));
+
+  // Theme switcher — "aurora" is the original/classic theme; choice persists in localStorage.
+  const THEME_KEY = 'resumeTheme';
+  const root = document.documentElement;
+  const swatches = document.querySelectorAll('.theme-swatch');
+
+  function applyTheme(name){
+    root.setAttribute('data-theme', name);
+    swatches.forEach(s => s.classList.toggle('active', s.dataset.themeName === name));
+    localStorage.setItem(THEME_KEY, name);
+  }
+
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'aurora';
+  applyTheme(savedTheme);
+
+  swatches.forEach(s => s.addEventListener('click', () => applyTheme(s.dataset.themeName)));
 </script>
 </body>
 </html>
