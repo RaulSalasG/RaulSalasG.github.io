@@ -85,7 +85,17 @@
   .brand-text span{ display:block; font-size:.76rem; color:var(--ink-dim); margin-top:2px; }
   .side-close{ display:none; }
 
-  .side-nav{ margin-top:52px; }
+  .side-clock{
+    display:flex; align-items:center; gap:9px; font-family:'JetBrains Mono', monospace; font-size:.72rem;
+    letter-spacing:.04em; color:var(--ink-dim); margin-top:22px;
+  }
+  .side-clock .dot{
+    width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0;
+    animation: dot-pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes dot-pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
+
+  .side-nav{ margin-top:30px; }
   .side-nav li + li{ margin-top:4px; }
   .side-nav a{
     display:flex; align-items:center; gap:14px; padding:10px 8px; border-radius:8px; color:var(--ink-dim);
@@ -96,15 +106,6 @@
   .side-nav a.active span{ color: var(--accent); opacity:1; }
 
   .side-bottom{ display:flex; flex-direction:column; gap:20px; }
-  .side-clock{
-    display:flex; align-items:center; gap:9px; font-family:'JetBrains Mono', monospace; font-size:.72rem;
-    letter-spacing:.04em; color:var(--ink-dim);
-  }
-  .side-clock .dot{
-    width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0;
-    animation: dot-pulse 2.6s ease-in-out infinite;
-  }
-  @keyframes dot-pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
   .theme-toggle{
     width:42px; height:42px; border-radius:10px; border:1px solid var(--border); background:transparent;
     color:var(--ink-dim); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem;
@@ -316,6 +317,7 @@
         <a href="#home" class="brand"><span class="brand-mark">RS</span><span class="brand-text"><strong>Raúl Salas Genero</strong><span>Business Analytics &amp; ML</span></span></a>
         <button class="side-close" id="sideClose" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
       </div>
+      <div class="side-clock mono"><span class="dot"></span><span id="clockTime">Boston, MA — --:--</span></div>
       <nav class="side-nav">
         <ol>
           <li><a href="#home" class="navlink active"><span>00</span>Home</a></li>
@@ -328,7 +330,6 @@
       </nav>
     </div>
     <div class="side-bottom">
-      <div class="side-clock mono"><span class="dot"></span><span id="clockTime">Boston, MA — --:--</span></div>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light / dark theme">
         <i class="fa-solid fa-moon"></i><i class="fa-solid fa-sun"></i>
       </button>
